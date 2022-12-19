@@ -2,5 +2,5 @@
 
 ## Installation
 ```bash
-curl https://github.com/bbenouarets/hetzner-ddns/blob/main/install.sh -o install.sh | bash
+curl https://raw.githubusercontent.com/bbenouarets/hetzner-ddns/main/install.sh | bash
 ```
