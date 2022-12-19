@@ -1,6 +1,6 @@
 # Hetzner Dynamic DNS Updater
 
-## Download
+## Installation
 ```bash
-curl https://github.com/bbenouarets/hetzner-ddns/blob/main/install.sh -o install.sh
+curl https://github.com/bbenouarets/hetzner-ddns/blob/main/install.sh -o install.sh | bash
 ```
