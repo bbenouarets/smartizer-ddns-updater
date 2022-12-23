@@ -1,0 +1,21 @@
+#!/usr/bin/env python3
+from modules.ddns import DDNSUpdater
+import argparse
+
+PROVIDER = ["hetzner", "cloudflare"]
+
+parser = argparse.ArgumentParser(prog="DDNS Updater")
+parser.add_argument("--profile", type=str, help="Choose the profile name", metavar="id", dest="id", default="default")
+sub = parser.add_subparsers(dest="init", help="Setup ddns updater")
+main = sub.add_parser("init", help="Setup ddns updater", description="Initalize DDNS profile")
+main.add_argument("--provider", choices=PROVIDER, required=True, dest="provider", help="Set the dns provider", metavar="name")
+main.add_argument("--key", type=str, required=True, dest="key", help="Set api key", metavar="key")
+main.add_argument("--name", type=str, default="default", dest="name", help="Set")
+args = parser.parse_args()
+
+ddns = DDNSUpdater()
+
+if args.init:
+    ddns.init(provider=args.provider, key=args.key)
+else:
+    ddns.update(profile=args.id)
