@@ -1,6 +1,6 @@
-# Hetzner Dynamic DNS Updater
+# Dynamic DNS Updater by Smartizer.io
 
 ## Installation
 ```bash
-curl https://raw.githubusercontent.com/bbenouarets/hetzner-ddns/main/install.sh | bash
+curl https://raw.githubusercontent.com/bbenouarets/smartizer-ddns-updater/main/install.sh | bash
 ```
