@@ -5,13 +5,13 @@ mkdir -p /var/log/smartizer/{ddns,analytics,log}
 PREFIX="DDNS"
 DIR="/etc/smartizer/ddns"
 BINARY="$DIR/ddns"
-REPO="https://github.com/bbenouarets/smartizer-ddns-updater/archive/master.zip"
+LINK="/usr/bin/ddns"
+REPO="https://github.com/bbenouarets/smartizer-ddns-updater/archive/main.zip"
 
 function log() {
   local type=$1
   local message=$2
   local timestamp=$(date +"%Y-%m-%d %H:%M:%S")
-  echo "$timestamp"
   type=$(echo "$type" | tr "[:lower:]" "[:upper:]")
   # Check if the type is "error"
   if [ "$type" = "error" ]; then
@@ -29,8 +29,16 @@ function log() {
 function download() {
   log "info" "Downloading repository..."
   log "info" $REPO
-  curl -L $REPO | unzip -d $DIR > /dev/null 2>&1
-  log "info" "Download successfully!"
+  curl -L $REPO -o /tmp/ddns.zip > /dev/null 2>&1
+  log "info" "Download successful!"
+  log "info" "Extracting download..."
+  unzip /tmp/ddns.zip -d /tmp > /dev/null 2>&1
+  cp -r /tmp/smartizer-ddns-updater-main/* /etc/smartizer/ddns > /dev/null 2>&1
+  log "info" "Extract to /etc/smartizer/ddns successful!"
+  log "info" "Clearing..."
+  rm /tmp/ddns.zip > /dev/null 2>&1
+  rm -r /tmp/smartizer* > /dev/null 2>&1
+  log "info" "Clear successful!"
 }
 
 function download_error() {
@@ -46,16 +54,14 @@ fi
 if getent group smartizer > /dev/null 2>&1; then
   log "info" "Group smartizer already exists."
 else
-  log "info" "Group smartizer does not exist"
   # Create the new group
   groupadd smartizer > /dev/null 2>&1
 fi
 
 # Check if the user already exists
 if getent passwd smartizer > /dev/null 2>&1; then
-  log "info" "User smartizer already exists"
+  log "info" "User smartizer already exists."
 else
-  log "info" "User smartizer does not exist"
   # Create a new user with a custom home directory and shell
   useradd -d /etc/smartizer -s /bin/bash -g smartizer smartizer > /dev/null 2>&1
 fi
@@ -145,3 +151,11 @@ download || download_error
 if [ ! -x "$BINARY" ]; then
   chmod -x "$BINARY"
 fi
+
+# Check if the link already exists
+if [ ! -L "$LINK" ]; then
+  # Create the symbolic link if it doesn't exist
+  ln -s "$BINARY" "$LINK"
+fi
+
+python3 -m pip install -r /etc/smartizer/ddns/requirements.txt > /dev/null 2>&1

@@ -10,7 +10,6 @@ sub = parser.add_subparsers(dest="init", help="Setup ddns updater")
 main = sub.add_parser("init", help="Setup ddns updater", description="Initalize DDNS profile")
 main.add_argument("--provider", choices=PROVIDER, required=True, dest="provider", help="Set the dns provider", metavar="name")
 main.add_argument("--key", type=str, required=True, dest="key", help="Set api key", metavar="key")
-main.add_argument("--name", type=str, default="default", dest="name", help="Set")
 args = parser.parse_args()
 
 ddns = DDNSUpdater()
