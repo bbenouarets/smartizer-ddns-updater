@@ -15,3 +15,8 @@ curl https://raw.githubusercontent.com/bbenouarets/smartizer-ddns-updater/main/s
 - [ ] IONOS
 - [ ] STRATO
 - [ ] Namecheap
+
+### Example
+```bash
+ddns init --provider hetzner --key secret-key
+```
